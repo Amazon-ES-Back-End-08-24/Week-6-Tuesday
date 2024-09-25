@@ -10,10 +10,11 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Integer> {
     // JPA QUERIES
     List<Book> findAllByBookTitleLike(String title);
+    List<Book> findAllByBookTitleEndsWith(String endsWith);
+    List<Book> findByBookTitleContaining(String infix);
+    List<Book> findByBookPrice(Integer price);
     List<Book> findAllByBookPriceGreaterThanEqual(Integer price);
     List<Book> findAllByBookPriceBetween(Integer price1, Integer price2);
-    List<Book> findAllByBookTitleEndsWith(String endsWith);
-
 
     // JPQL (JPA - SQL)
 
