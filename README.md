@@ -296,51 +296,7 @@ entidades, repositorios y consultas con JPA queries, junto con el uso de Spring 
         - Encuentre todas las ventas realizadas en una fecha específica.
         - Agrupe las ventas por carId y calcule el número total de ventas por carId.
 
-### Ejercicio Práctico: Gestión de Inventario de Vehículos con Spring Boot y JPA
-
-En este ejercicio, vamos a desarrollar una aplicación para gestionar el inventario y las ventas de vehículos en una concesionaria. El objetivo es practicar la creación de entidades, consultas con **JPQL** y **SQL nativo** utilizando **Spring Boot** y **Spring Data JPA**, sin relaciones explícitas en las entidades. La base de datos utilizada será **MySQL**.
-
----
-
-### Tareas:
-
-1. **Configuración del Proyecto con Spring Initializr**:
-    - Crea un proyecto con **Spring Initializr** y selecciona las siguientes dependencias:
-        - Spring Web
-        - Spring Data JPA
-        - MySQL Driver
-    - Configura la conexión a la base de datos en el archivo `application.properties` para conectar con **MySQL**.
-
-2. **Creación de Entidades**:
-    - Define la entidad **`Car`** con los siguientes atributos:
-        - `id`: Long, clave primaria autogenerada.
-        - `brand`: String, marca del vehículo.
-        - `model`: String, modelo del vehículo.
-        - `year`: Integer, año de fabricación.
-        - `price`: Decimal, precio del vehículo.
-        - `stock`: Integer, cantidad disponible en el inventario.
-    - Define la entidad **`Sale`** para registrar las ventas de vehículos con los siguientes atributos:
-        - `id`: Long, clave primaria autogenerada.
-        - `carId`: Long, hace referencia al vehículo vendido.
-        - `quantity`: Integer, cantidad vendida.
-        - `salesDate`: LocalDate, fecha de la venta.
-
-3. **Creación de Repositorios**:
-    - Crea un repositorio para la entidad `Car` utilizando la interfaz `JpaRepository`.
-    - Crea un repositorio para la entidad `Sale` utilizando la interfaz `JpaRepository`.
-
-4. **Consultas JPQL Básicas**:
-    - Implementa las siguientes consultas en el repositorio de `Car` utilizando **JPQL**:
-        - Encuentra todos los vehículos disponibles.
-        - Busca vehículos por la marca (`brand`).
-        - Busca vehículos cuyo precio esté dentro de un rango (por ejemplo, entre 10,000 y 50,000).
-        - Ordena los vehículos por precio, de mayor a menor.
-    - En el repositorio de `Sale`, implementa las siguientes consultas utilizando **JPQL**:
-        - Encuentra todas las ventas realizadas en una fecha específica.
-        - Agrupa las ventas por `carId` y calcula el número total de ventas por `carId`.
-
-
-5. **Consultas con JPQL**:
+5. Consultas con JPQL:
 
 - Crea una consulta en JPQL que busque vehículos por `brand` y los ordene por `price` de menor a mayor.
 - Implementa una consulta que encuentre vehículos cuyo precio esté dentro de un rango especificado.
@@ -350,7 +306,7 @@ En este ejercicio, vamos a desarrollar una aplicación para gestionar el inventa
 - Crea una consulta que encuentre el vehículo más caro en el inventario.
 - Implementa una consulta que encuentre todas las ventas para un vehículo específico usando su `carId`.
 
-6. **Consultas con SQL Nativo**:
+6. Consultas con SQL Nativo:
 
 - Crea una consulta en SQL nativo para encontrar todos los vehículos cuyo precio sea mayor a un valor específico.
 - Implementa una consulta en SQL nativo que busque vehículos por `brand`.
