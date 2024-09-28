@@ -15,15 +15,13 @@ public class Book {
     @Column(name = "price")
     private Integer bookPrice;
 
-    @Column(name = "isbn")
-    private String bookIsbn;
-
-    public Book(Integer bookId, String bookTitle, Integer bookPrice, String bookIsbn) {
+    public Book(Integer bookId, String bookTitle, Integer bookPrice) {
         this.bookId = bookId;
         this.bookTitle = bookTitle;
         this.bookPrice = bookPrice;
-        this.bookIsbn = bookIsbn;
     }
+
+    // todo add constructor without id
 
     public Book() {
     }
@@ -50,13 +48,5 @@ public class Book {
 
     public void setBookPrice(Integer bookPrice) {
         this.bookPrice = bookPrice;
-    }
-
-    public String getBookIsbn() {
-        return bookIsbn;
-    }
-
-    public void setBookIsbn(String bookIsbn) {
-        this.bookIsbn = bookIsbn;
     }
 }

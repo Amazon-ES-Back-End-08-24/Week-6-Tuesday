@@ -295,3 +295,163 @@ entidades, repositorios y consultas con JPA queries, junto con el uso de Spring 
     - En el repositorio de `Sale`, implementa una consulta que:
         - Encuentre todas las ventas realizadas en una fecha específica.
         - Agrupe las ventas por carId y calcule el número total de ventas por carId.
+
+### Ejercicio Práctico: Gestión de Inventario de Vehículos con Spring Boot y JPA
+
+En este ejercicio, vamos a desarrollar una aplicación para gestionar el inventario y las ventas de vehículos en una concesionaria. El objetivo es practicar la creación de entidades, consultas con **JPQL** y **SQL nativo** utilizando **Spring Boot** y **Spring Data JPA**, sin relaciones explícitas en las entidades. La base de datos utilizada será **MySQL**.
+
+---
+
+### Tareas:
+
+1. **Configuración del Proyecto con Spring Initializr**:
+    - Crea un proyecto con **Spring Initializr** y selecciona las siguientes dependencias:
+        - Spring Web
+        - Spring Data JPA
+        - MySQL Driver
+    - Configura la conexión a la base de datos en el archivo `application.properties` para conectar con **MySQL**.
+
+2. **Creación de Entidades**:
+    - Define la entidad **`Car`** con los siguientes atributos:
+        - `id`: Long, clave primaria autogenerada.
+        - `brand`: String, marca del vehículo.
+        - `model`: String, modelo del vehículo.
+        - `year`: Integer, año de fabricación.
+        - `price`: Decimal, precio del vehículo.
+        - `stock`: Integer, cantidad disponible en el inventario.
+    - Define la entidad **`Sale`** para registrar las ventas de vehículos con los siguientes atributos:
+        - `id`: Long, clave primaria autogenerada.
+        - `carId`: Long, hace referencia al vehículo vendido.
+        - `quantity`: Integer, cantidad vendida.
+        - `salesDate`: LocalDate, fecha de la venta.
+
+3. **Creación de Repositorios**:
+    - Crea un repositorio para la entidad `Car` utilizando la interfaz `JpaRepository`.
+    - Crea un repositorio para la entidad `Sale` utilizando la interfaz `JpaRepository`.
+
+4. **Consultas JPQL Básicas**:
+    - Implementa las siguientes consultas en el repositorio de `Car` utilizando **JPQL**:
+        - Encuentra todos los vehículos disponibles.
+        - Busca vehículos por la marca (`brand`).
+        - Busca vehículos cuyo precio esté dentro de un rango (por ejemplo, entre 10,000 y 50,000).
+        - Ordena los vehículos por precio, de mayor a menor.
+    - En el repositorio de `Sale`, implementa las siguientes consultas utilizando **JPQL**:
+        - Encuentra todas las ventas realizadas en una fecha específica.
+        - Agrupa las ventas por `carId` y calcula el número total de ventas por `carId`.
+
+
+5. **Consultas con JPQL**:
+
+- Crea una consulta en JPQL que busque vehículos por `brand` y los ordene por `price` de menor a mayor.
+- Implementa una consulta que encuentre vehículos cuyo precio esté dentro de un rango especificado.
+- Crea una consulta para buscar vehículos cuyo `model` contenga un término específico.
+- Implementa una consulta en JPQL que encuentre todas las ventas realizadas después de una fecha específica.
+- Implementa una consulta que agrupe las ventas por `carId` y cuente el número total de ventas por cada vehículo.
+- Crea una consulta que encuentre el vehículo más caro en el inventario.
+- Implementa una consulta que encuentre todas las ventas para un vehículo específico usando su `carId`.
+
+6. **Consultas con SQL Nativo**:
+
+- Crea una consulta en SQL nativo para encontrar todos los vehículos cuyo precio sea mayor a un valor específico.
+- Implementa una consulta en SQL nativo que busque vehículos por `brand`.
+- Crea una consulta que encuentre vehículos cuyo `model` comience con una letra específica usando `LIKE`.
+- Crea una consulta en SQL nativo que sume todas las ventas realizadas para un vehículo específico.
+- Implementa una consulta en SQL nativo que encuentre el vehículo más barato.
+- Crea una consulta que busque todas las ventas realizadas entre dos fechas específicas.
+- Implementa una consulta en SQL nativo que realice un `JOIN` entre las tablas `Car` y `Sale` para obtener las ventas junto con el precio del vehículo.
+- Implementa una consulta en SQL nativo que calcule el total de ingresos (suma de precios) de las ventas de vehículos en un rango de fechas.
+
+---
+
+## JPQL vs SQL
+
+### JPQL
+
+- **Definición**: JPQL (Java Persistence Query Language) es un lenguaje de consultas orientado a objetos que trabaja con entidades JPA. Se basa en la sintaxis SQL pero opera a un nivel más alto de abstracción, permitiendo realizar consultas sobre clases y objetos en lugar de tablas y columnas.
+
+- **Uso**: JPQL se usa cuando se desea una portabilidad entre distintas bases de datos y consultas más orientadas a objetos.
+
+- Consultas agregadas: JPQL permite realizar consultas agregadas (SUM, AVG, MIN, MAX) de forma sencilla cuando trabajamos sobre entidades JPA.
+
+```java
+// Consulta personalizada usando JPQL en Book repository
+
+// Named Bind Parameter (Parámetro de enlace con nombre)
+@Query("SELECT l FROM Libro l WHERE l.libroTitulo LIKE %:title%")
+List<Libro> findByLibroTituloLike(String title);
+
+// Funciones agregadas con JPQL
+@Query("SELECT SUM(l.libroPrecio) FROM Libro l")
+Integer sumLibroPrecio();
+
+@Query("SELECT AVG(l.libroPrecio) FROM Libro l")
+Double averageLibroPrecio();
+
+@Query("SELECT MAX(l.libroPrecio) FROM Libro l")
+Integer maxLibroPrecio();
+
+@Query("SELECT MIN(l.libroPrecio) FROM Libro l")
+Integer minLibroPrecio();
+
+// En Sale repository
+
+@Query("SELECT s.clientName, s.saleDate FROM Sale s WHERE s.bookId = :bookId")
+List<Object[]> findClientNamesAndSaleDatesByBookId(@Param("bookId") Integer bookId);
+
+@Query("SELECT s.clientName, s.saleDate, b.bookTitle FROM Sale s JOIN Book b ON s.bookId = b.bookId WHERE s.bookId = :bookId")
+List<Object[]> findClientNamesAndSaleDatesAndBookTitleByBookId(@Param("bookId") Integer bookId);
+
+// Positional Bind Parameter (Parámetro de enlace posicional)
+@Query("SELECT s FROM Sale s WHERE s.bookId = ?1 AND s.saleDate = ?2")
+List<Sale> findSalesByBookIdAndSaleDate(Integer bookId, String saleDate);
+
+```
+
+### SQL
+
+- **Definición**: SQL (Structured Query Language) es un lenguaje estándar utilizado para interactuar directamente con las bases de datos relacionales. Las consultas SQL trabajan directamente con tablas y columnas, lo que lo hace más potente en ciertas optimizaciones específicas de la base de datos.
+
+- **Uso**: SQL nativo es preferido cuando se requiere un control total sobre las consultas y optimizaciones específicas de la base de datos.
+
+#### Ejemplo:
+Esta consulta compara el precio de los libros con el promedio calculado en una subconsulta. Aunque JPQL permite subconsultas, cuando la lógica es más compleja o dependiente de SQL específico, es mejor usar SQL nativo.
+```sql
+@Query(value = "SELECT * FROM books b WHERE b.price > (SELECT AVG(price) FROM books)", nativeQuery = true)
+List<Book> findBooksAboveAveragePrice();
+```
+
+#### Más ejemplos:
+```sql
+-- Consultas agregadas en SQL
+SELECT SUM(price) FROM books;
+SELECT AVG(price) FROM books;
+SELECT MAX(price) FROM books;
+SELECT MIN(price) FROM books;
+```
+
+### Comparación
+
+- **Nivel de Abstracción**: JPQL opera a un nivel más alto, trabajando con objetos y clases, mientras que SQL trabaja con tablas y columnas.
+- **Portabilidad**: JPQL es más portable entre diferentes bases de datos porque no depende de características específicas de un sistema, mientras que SQL puede ser optimizado para una base de datos particular.
+- **Complejidad de Consultas**: SQL puede ser más potente para operaciones complejas y optimizaciones específicas de una base de datos, mientras que JPQL ofrece una solución generalizada y orientada a objetos.
+
+### Resumen:
+
+- **JPQL** permite:
+    - Consultas orientadas a entidades JPA.
+    - Uso de agregaciones estándar (`SUM`, `AVG`, etc.).
+    - Consultas que involucran relaciones entre entidades.
+    - Paginación y ordenación directamente con entidades.
+    - Subconsultas en el `WHERE`.
+
+- **SQL Nativo** permite:
+    - Uso de funciones específicas de la base de datos (JSON, arrays, etc.).
+    - Optimización avanzada con índices.
+    - Funciones de ventana (`RANK()`, `ROW_NUMBER()`, etc.).
+    - Actualizaciones/borrados que afectan múltiples tablas con `JOINs`.
+    - Subconsultas en el `FROM`.
+    - Consultas recursivas con `WITH` (CTE).
+
+Ambos enfoques son útiles dependiendo de la complejidad y los requerimientos específicos de la consulta.
+
+---
