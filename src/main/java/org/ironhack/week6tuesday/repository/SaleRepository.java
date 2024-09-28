@@ -23,7 +23,7 @@ public interface SaleRepository extends JpaRepository<Sale, Integer> {
 //    List<Object[]> findClientNameAndSaleDateByBookId(Integer bookId, Integer saleId);
 
     // positional bind parameter -> parámetro de enlace posicional
-    @Query("SELECT Sale FROM Sale WHERE Sale.saleDate = ?2 AND Sale.bookId = ?1")
+    @Query("SELECT s FROM Sale s WHERE s.saleDate = ?2 AND s.bookId = ?1")
     List<Sale> findSalesByBookIdAndSaleDate(Integer bookId, String saleDate);
 
     @Query("SELECT s.clientName, s.saleDate, b.bookTitle FROM Sale s INNER JOIN Book b ON s.bookId = b.bookId " +

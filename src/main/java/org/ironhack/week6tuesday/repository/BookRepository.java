@@ -12,10 +12,15 @@ import java.util.List;
 public interface BookRepository extends JpaRepository<Book, Integer> {
     // JPA QUERIES
     List<Book> findAllByBookTitleLike(String title);
+
     List<Book> findAllByBookTitleEndsWith(String endsWith);
+
     List<Book> findByBookTitleContaining(String infix);
+
     List<Book> findByBookPrice(Integer price);
+
     List<Book> findAllByBookPriceGreaterThanEqual(Integer price);
+
     List<Book> findAllByBookPriceBetween(Integer price1, Integer price2);
 
     // JPQL (JPA - SQL)
@@ -31,7 +36,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query("SELECT MIN(b.bookPrice) FROM Book b")
     Integer minBookPrice();
 
-    @Query("SELECT Book FROM Book b WHERE Book.bookTitle LIKE %:title%")
+    @Query("SELECT b FROM Book b WHERE b.bookTitle LIKE %:title%")
     List<Book> findByBookTitleLike(@Param("title") String title);
 
     // SQL NATIVO
